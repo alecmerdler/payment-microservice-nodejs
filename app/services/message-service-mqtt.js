@@ -6,11 +6,11 @@ class MessageService {
         this.client = mqtt.connect("tcp://52.25.184.170:1884");
         this.actions = {};
 
-        this.client.on("connect", function() {
-            client.subscribe("payments");
+        this.client.on("connect", () => {
+            this.client.subscribe("payments");
         });
 
-        this.client.on("message", function(topic, message) {
+        this.client.on("message", (topic, message) => {
             if (this.actions.topic !== undefined) {
                 this.actions.topic(message);
             }

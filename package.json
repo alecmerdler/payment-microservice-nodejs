@@ -4,7 +4,8 @@
   "description": "Payment microservice built with NodeJS and ExpressJS",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jasmine-node/bin/jasmine-node test"
+    "test": "./node_modules/jasmine-node/bin/jasmine-node test",
+    "start": "node app/app.js"
   },
   "author": "Alec Merdler",
   "license": "ISC",

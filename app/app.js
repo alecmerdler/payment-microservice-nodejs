@@ -3,13 +3,13 @@
 var express = require("express"),
     app = express(),
     mqtt = require("mqtt"),
-    MessageServiceMQTT = require("services/message-service-mqtt"),
+    MessageServiceMQTT = require("./services/message-service-mqtt"),
     Rx = require("rx");
 
 function init() {
     var messageService = new MessageServiceMQTT(mqtt);
     messageService.subscribe("users", function(message) {
-        console.log(message);
+        console.log(message.toString());
     });
 
     app.get("/", function(request, response) {
