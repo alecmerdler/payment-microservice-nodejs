@@ -1,0 +1,17 @@
+{
+  "name": "payment-microservice-nodejs",
+  "version": "1.0.0",
+  "description": "Payment microservice built with NodeJS and ExpressJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Alec Merdler",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.14.0"
+  },
+  "dependencies": {
+    "mqtt": "^2.0.1"
+  }
+}
