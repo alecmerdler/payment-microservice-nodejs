@@ -2,12 +2,12 @@
 
 class MessageService {
 
-    constructor(mqtt) {
-        this.client = mqtt.connect("tcp://52.25.184.170:1884");
+    constructor(mqtt, brokerURI) {
+        this.client = mqtt.connect(brokerURI);
         this.actions = {};
 
         this.client.on("connect", () => {
-            this.client.subscribe("payments");
+            console.log("connected to MQTT broker")
         });
 
         this.client.on("message", (topic, message) => {
@@ -25,6 +25,10 @@ class MessageService {
     unsubscribe(topic) {
         this.client.unsubscribe(topic);
         this.actions.topic.delete();
+    }
+
+    sendMessage(topic, message) {
+        this.client.publish(topic, message);
     }
 }
 

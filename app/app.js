@@ -1,10 +1,10 @@
 "use strict";
 
-var express = require("express"),
-    app = express(),
-    mqtt = require("mqtt"),
-    MessageServiceMQTT = require("./services/message-service-mqtt"),
-    Rx = require("rx");
+var express = require("express");
+var app = express();
+var mqtt = require("mqtt");
+var MessageServiceMQTT = require("./services/message-service-mqtt");
+var Rx = require("rx");
 
 function init() {
     var messageService = new MessageServiceMQTT(mqtt);
