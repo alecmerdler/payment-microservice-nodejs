@@ -7,7 +7,7 @@ class MessageService {
         this.actions = {};
 
         this.client.on("connect", () => {
-            console.log("connected to MQTT broker")
+            console.log("connected to MQTT broker at " + brokerURI);
         });
 
         this.client.on("message", (topic, message) => {

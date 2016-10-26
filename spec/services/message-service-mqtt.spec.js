@@ -11,10 +11,10 @@ describe("MessageServiceMQTT", () => {
     beforeEach(() => {
         brokerURI = "tcp://52.25.184.170:1884";
         clientMock = {
-            on: function(event, callback) {},
-            subscribe: function(topic, callback) {},
-            unsubscribe: function(topic) {},
-            publish: function(topic, message) {}
+            on: jasmine.createSpy("on"),
+            subscribe: jasmine.createSpy("subscribe"),
+            unsubscribe: jasmine.createSpy("unsubscribe"),
+            publish: jasmine.createSpy("publish")
         };
         mqttMock = {
             connect: function(serverURI) {
@@ -22,10 +22,10 @@ describe("MessageServiceMQTT", () => {
             },
         };
         spyOn(mqttMock, "connect").and.callThrough();
-        spyOn(clientMock, "on").and.callThrough();
-        spyOn(clientMock, "subscribe").and.callThrough();
-        spyOn(clientMock, "unsubscribe").and.callThrough();
-        spyOn(clientMock, "publish").and.callThrough();
+        // spyOn(clientMock, "on").and.callThrough();
+        // spyOn(clientMock, "subscribe").and.callThrough();
+        // spyOn(clientMock, "unsubscribe").and.callThrough();
+        // spyOn(clientMock, "publish").and.callThrough();
         messageService = new MessageServiceMQTT(mqttMock, brokerURI);
     });
 
