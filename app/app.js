@@ -6,17 +6,35 @@ var mqtt = require("mqtt");
 var MessageServiceMQTT = require("./services/message-service-mqtt");
 var Rx = require("rx");
 
+var appName = "payment-microservice-nodejs";
+var port = 3000;
+
 function init() {
     var messageService = new MessageServiceMQTT(mqtt);
-    messageService.subscribe("users", function(message) {
-        console.log(message.toString());
+
+    app.get("/", (request, response) => {
+        response
+            .status(200)
+            .json({"name": appName});
     });
 
-    app.get("/", function(request, response) {
-        response.send("Hello World!");
+    app.get("/healthcheck", (request, response) => {
+        response
+            .status(200)
+            .json("status", "running");
     });
 
-    app.listen(3000, function() {
+    app.post("/initialize", (request, response) => {
+        messageService.subscribe("payment", (message) => {
+            console.log(message.toString());
+        });
+
+        response
+            .status(200)
+            .json({"status": "initialized"});
+    });
+
+    app.listen(port, () => {
         console.log("payment-microservice-nodejs listening on http://localhost:3000");
     });
 }

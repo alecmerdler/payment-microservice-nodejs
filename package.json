@@ -16,6 +16,7 @@
   "dependencies": {
     "mqtt": "^2.0.1",
     "paypal-rest-sdk": "^1.6.9",
-    "rx": "^4.1.0"
+    "rx": "^4.1.0",
+    "sqlite3": "^3.1.7"
   }
 }

@@ -12,19 +12,21 @@ class MessageService {
 
         this.client.on("message", (topic, message) => {
             if (this.actions.topic !== undefined) {
-                this.actions.topic(message);
+                this.actions[topic](message);
             }
         });
     }
 
     subscribe(topic, callback) {
         this.client.subscribe(topic);
-        this.actions.topic = callback;
+        this.actions[topic] = callback;
     }
 
     unsubscribe(topic) {
-        this.client.unsubscribe(topic);
-        this.actions.topic.delete();
+        if (this.actions[topic] !== undefined) {
+            this.client.unsubscribe(topic);
+            delete this.actions[topic];
+        }
     }
 
     sendMessage(topic, message) {
