@@ -8,6 +8,7 @@ var Rx = require("rx");
 
 var appName = "payment-microservice-nodejs";
 var port = 3000;
+var server;
 
 function init() {
     var messageService = new MessageServiceMQTT(mqtt);
@@ -34,11 +35,13 @@ function init() {
             .json({"status": "initialized"});
     });
 
-    app.listen(port, () => {
-        console.log("payment-microservice-nodejs listening on http://localhost:3000");
+    server = app.listen(port, () => {
+        console.log("payment-microservice-nodejs listening on http://localhost:" + port);
     });
 }
 
 init();
+
+module.exports = server;
 
 
