@@ -1,17 +1,22 @@
 "use strict";
 
 var Unirest = require("unirest");
+var mqtt = require("mqtt");
 
 describe("Payment Integration Test", () => {
     var serviceURL = "http://localhost:3000";
     var server;
+    var messageClient;
 
     beforeEach(() => {
         server = require("../../app/server");
+        var brokerURI = "tcp://52.25.184.170:1884";
+        messageClient = mqtt.connect(brokerURI);
     });
 
     afterEach(() => {
         server.close();
+        messageClient.end(true);
     });
 
     describe("GET /", () => {
@@ -44,5 +49,9 @@ describe("Payment Integration Test", () => {
                     expect(response.body).toEqual({"status": "initialized"});
                 });
         });
+    });
+
+    describe("messages to 'payment' topic", () => {
+
     });
 });

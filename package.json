@@ -15,6 +15,7 @@
     "unirest": "^0.5.1"
   },
   "dependencies": {
+    "jasmine": "^2.5.2",
     "mqtt": "^2.0.1",
     "paypal-rest-sdk": "^1.6.9",
     "rx": "^4.1.0",
