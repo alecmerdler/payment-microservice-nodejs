@@ -23,6 +23,13 @@ class Payment {
         this.itemId = item.id;
         this.price = price;
         this.discount = discount;
+        // FIXME: Generate unique id
+        this.id = 1;
+        this.confirmed = false;
+    }
+
+    confirm() {
+        this.confirmed = true;
     }
 }
 
