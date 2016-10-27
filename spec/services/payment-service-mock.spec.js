@@ -106,5 +106,15 @@ describe("PaymentServiceMock", () => {
 
             expect(paymentService.unconfirmedPayments).not.toContain(payment);
         });
+
+        it("does not return anything", () => {
+            var price = 32.00;
+            var discount = 0;
+            var payment = new Payment(buyer, seller, item, price, discount);
+            paymentService.unconfirmedPayments.push(payment);
+            var object = paymentService.cancelPayment(payment.id);
+
+            expect(object).not.toBeDefined();
+        });
     });
 });

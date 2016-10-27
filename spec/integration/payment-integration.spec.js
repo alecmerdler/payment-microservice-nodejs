@@ -15,7 +15,6 @@ describe("Payment Integration Test", () => {
         server.on("listening", () => {
             done();
         });
-        console.log("beforeEach");
     });
 
     afterAll((done) => {
@@ -74,11 +73,10 @@ describe("Payment Integration Test", () => {
             done();
         });
 
-        it("adds message to messages list", (done) => {
+        it("does something with message", (done) => {
             Unirest.get(serviceURL + "/initialize")
                 .end((response) => {
                     messageClient.publish(topic, "Cool message");
-
                     done();
                 });
         });
