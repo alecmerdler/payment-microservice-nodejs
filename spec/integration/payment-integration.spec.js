@@ -16,10 +16,7 @@ describe("Payment Integration Test", () => {
             console.log("server started");
             done();
         });
-    });
-
-    beforeEach((done) => {
-
+        console.log("beforeEach");
     });
 
     afterAll((done) => {
@@ -29,10 +26,7 @@ describe("Payment Integration Test", () => {
             console.log("server closed");
             done();
         });
-    });
-
-    afterEach((done) => {
-
+        server = undefined;
     });
 
     describe("GET /", () => {
@@ -48,7 +42,7 @@ describe("Payment Integration Test", () => {
 
     describe("GET /healthcheck", () => {
 
-        xit("responds with 200 and health status", (done) => {
+        it("responds with 200 and health status", (done) => {
             Unirest.get(serviceURL + "/healthcheck")
                 .end((response) => {
                     expect(response.status).toEqual(200);
@@ -60,8 +54,8 @@ describe("Payment Integration Test", () => {
 
     describe("GET /initialize", () => {
 
-        xit("responds with 200 and initialization status", (done) => {
-            Unirest.get(serviceURL + "/initialize")
+        it("responds with 200 and initialization status", (done) => {
+            Unirest.post(serviceURL + "/initialize")
                 .end((response) => {
                     expect(response.status).toEqual(200);
                     expect(response.body).toEqual({"status": "initialized"});
@@ -77,12 +71,12 @@ describe("Payment Integration Test", () => {
             topic = "payment";
         });
 
-        xit("does nothing if '/initialize' route has not been hit", (done) => {
+        it("does nothing if '/initialize' route has not been hit", (done) => {
             messageClient.publish(topic, "Cool message");
             done();
         });
 
-        xit("", (done) => {
+        it("", (done) => {
             Unirest.get(serviceURL + "/initialize")
                 .end((response) => {
                     messageClient.publish(topic, "Cool message");
