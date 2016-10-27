@@ -2,8 +2,7 @@
 
 class Purchase {
 
-    constructor(id, dinerId, chefId, mealId, price, timestamp, status) {
-        this.id = id;
+    constructor(dinerId, chefId, mealId, price, timestamp, status) {
         this.dinerId = dinerId;
         this.chefId = chefId;
         this.mealId = mealId;

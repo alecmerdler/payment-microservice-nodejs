@@ -22,10 +22,6 @@ describe("MessageServiceMQTT", () => {
             },
         };
         spyOn(mqttMock, "connect").and.callThrough();
-        // spyOn(clientMock, "on").and.callThrough();
-        // spyOn(clientMock, "subscribe").and.callThrough();
-        // spyOn(clientMock, "unsubscribe").and.callThrough();
-        // spyOn(clientMock, "publish").and.callThrough();
         messageService = new MessageServiceMQTT(mqttMock, brokerURI);
     });
 

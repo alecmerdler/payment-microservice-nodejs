@@ -13,7 +13,6 @@ describe("Payment Integration Test", () => {
         messageClient = mqtt.connect(brokerURI);
         server = require("../../app/server");
         server.on("listening", () => {
-            console.log("server started");
             done();
         });
         console.log("beforeEach");
@@ -23,7 +22,6 @@ describe("Payment Integration Test", () => {
         messageClient.end(true);
         server.close();
         server.on("close", () => {
-            console.log("server closed");
             done();
         });
         server = undefined;
@@ -76,10 +74,11 @@ describe("Payment Integration Test", () => {
             done();
         });
 
-        it("", (done) => {
+        it("adds message to messages list", (done) => {
             Unirest.get(serviceURL + "/initialize")
                 .end((response) => {
                     messageClient.publish(topic, "Cool message");
+
                     done();
                 });
         });
