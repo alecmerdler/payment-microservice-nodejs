@@ -26,7 +26,10 @@ class ApplicationController {
     }
 
     initialize(request, response) {
-        messageService.subscribe("payment", (message) => {
+        messageService.subscribe("purchase", (message) => {
+            console.log(message.toString());
+        });
+        messageService.subscribe("meals/+/purchase", (message) => {
             console.log(message.toString());
         });
 

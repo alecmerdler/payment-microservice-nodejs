@@ -1,5 +1,6 @@
 "use strict";
 
+// TODO: Use RxJS to return Observables
 class MessageService {
 
     constructor(mqtt, brokerURI) {
