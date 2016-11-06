@@ -1,6 +1,7 @@
 "use strict";
 
 var mqtt = require("mqtt");
+var Rx = require("rx");
 var MessageServiceMQTT = require("../services/message-service-mqtt");
 var PaymentServiceMock = require("../services/payment-service-mock");
 var messageService = new MessageServiceMQTT(mqtt);
@@ -26,10 +27,12 @@ class ApplicationController {
     }
 
     initialize(request, response) {
-        messageService.subscribe("purchase", (message) => {
+        messageService.subscribe("purchases", true)
+            .subscribe((message) => {
             console.log(message.toString());
         });
-        messageService.subscribe("meals/+/purchase", (message) => {
+        messageService.subscribe("meals/+/purchase", false)
+            .subscribe((message) => {
             console.log(message.toString());
         });
 

@@ -1,6 +1,7 @@
 "use strict";
 
 var MessageServiceMQTT = require("../../app/services/message-service-mqtt");
+var Rx = require("rx");
 
 describe("MessageServiceMQTT", () => {
     var mqttMock;
@@ -42,24 +43,38 @@ describe("MessageServiceMQTT", () => {
 
     describe("subscribe", () => {
         var topic;
-        var callback;
 
         beforeEach(() => {
             topic = "test";
-            callback = function() {};
         });
 
         it("calls client method to subscribe to given topic", () => {
-            messageService.subscribe(topic, callback);
+            messageService.subscribe(topic, false)
+                .subscribe((message) => {});
 
-            expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic]);
+            expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic + "/"]);
         });
 
-        it("adds given callback to actions object using topic as property name", () => {
-            messageService.subscribe(topic, callback);
 
-            expect(Object.keys(messageService.actions)).toContain(topic);
-            expect(messageService.actions[topic]).toEqual(callback);
+        it("calls client method to subscribe to given topic with wildcard when given true for 'subscribeToAll'", () => {
+            messageService.subscribe(topic, true)
+                .subscribe((message) => {});
+
+            expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic + "/+"]);
+        });
+
+        it("adds new Subscriber to subscribers map using topic as key name", () => {
+            messageService.subscribe(topic, false)
+                .subscribe((message) => {});
+
+            expect(Object.keys(messageService.subscribers)).toContain(topic);
+            expect(messageService.subscribers[topic][0] instanceof Rx.Observer).toBe(true);
+        });
+
+        it("returns an Observable", () => {
+            var observable = messageService.subscribe(topic, true);
+
+            expect(observable instanceof Rx.Observable).toBe(true);
         });
     });
 
@@ -77,14 +92,16 @@ describe("MessageServiceMQTT", () => {
         });
 
         it("calls client method to unsubscribe from given topic when subscribed", () => {
-            messageService.subscribe(topic, function() {});
+            messageService.subscribe(topic, false)
+                .subscribe((message) => {});
             messageService.unsubscribe(topic);
 
             expect(clientMock.unsubscribe).toHaveBeenCalled();
         });
 
         it("removes callback from actions object when subscribed", () => {
-            messageService.subscribe(topic, function() {});
+            messageService.subscribe(topic, false)
+                .subscribe((message) => {});
             messageService.unsubscribe(topic);
 
             expect(Object.keys(messageService.actions)).not.toContain(topic);

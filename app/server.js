@@ -2,7 +2,6 @@
 
 var express = require("express");
 var applicationController = require("./controllers/application-controller");
-var Rx = require("rx");
 
 class Server {
 
