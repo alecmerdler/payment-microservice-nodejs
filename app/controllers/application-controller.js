@@ -1,23 +1,25 @@
 "use strict";
 
-var mqtt = require("mqtt");
 var Rx = require("rx");
-var MessageServiceMQTT = require("../services/message-service-mqtt");
-var PaymentServiceMock = require("../services/payment-service-mock");
-var messageService = new MessageServiceMQTT(mqtt);
-var paymentService = new PaymentServiceMock();
-var appName = "payment-microservice-nodejs";
+
 
 class ApplicationController {
 
-    constructor() {
+    constructor(appName, paymentService, messageService) {
+        this.appName = appName;
+        this.paymentService = paymentService;
+        this.messageService = messageService;
 
+        // Bind methods to instance (http://stackoverflow.com/questions/34680450/)
+        this.root = this.root.bind(this);
+        this.healthcheck = this.healthcheck.bind(this);
+        this.initialize = this.initialize.bind(this);
     }
 
     root(request, response) {
         response
             .status(200)
-            .json({"name": appName});
+            .json({"name": this.appName});
     }
 
     healthcheck(request, response) {
@@ -27,14 +29,10 @@ class ApplicationController {
     }
 
     initialize(request, response) {
-        messageService.subscribe("purchases", true)
+        this.messageService.subscribe("meals", false)
             .subscribe((message) => {
-            console.log(message.toString());
-        });
-        messageService.subscribe("meals/+/purchase", false)
-            .subscribe((message) => {
-            console.log(message.toString());
-        });
+                console.log(message.toString());
+            });
 
         response
             .status(200)
@@ -42,4 +40,4 @@ class ApplicationController {
     }
 }
 
-module.exports = new ApplicationController();
+module.exports = ApplicationController;

@@ -6,6 +6,12 @@ var Rx = require("rx");
 class MessageServiceMQTT {
 
     constructor(mqtt, brokerURI) {
+        if (mqtt == undefined) {
+            throw Error("No 'mqtt' argument given");
+        }
+        if (brokerURI == undefined) {
+            throw Error("No 'brokerURI' argument given");
+        }
         this.client = mqtt.connect(brokerURI);
         this.actions = {};
         this.subscribers = {};
@@ -15,8 +21,9 @@ class MessageServiceMQTT {
         });
 
         this.client.on("message", (topic, message) => {
-            if (this.actions[topic] !== undefined) {
-                this.subscribers[topic].forEach((subscriber) => {
+            var subscriptionTopic = topic.split("/")[0];
+            if (this.subscribers[subscriptionTopic] !== undefined) {
+                this.subscribers[subscriptionTopic].forEach((subscriber) => {
                     subscriber.onNext(message);
                 });
             }

@@ -61,11 +61,11 @@ describe("Payment Integration Test", () => {
         });
     });
 
-    describe("message to 'purchase' topic", () => {
+    describe("message to 'meals/' topic", () => {
         var topic;
 
         beforeEach(() => {
-            topic = "purchase";
+            topic = "meals/1/";
         });
 
         it("does nothing if '/initialize' route has not been hit", (done) => {
@@ -81,4 +81,5 @@ describe("Payment Integration Test", () => {
                 });
         });
     });
+
 });
