@@ -13,7 +13,7 @@ class Server {
         var app = express();
         var appName = "payment-microservice-nodejs";
         var port = 3000;
-        var brokerURI = "tcp://52.25.184.170:1884";
+        var brokerURI = "tcp://138.68.197.76:1883";
         var messageService = new MessageServiceMQTT(mqtt, brokerURI);
         var paymentService = new PaymentServiceMock();
         var applicationController = new ApplicationController(appName, paymentService, messageService)
