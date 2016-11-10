@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
-    "start": "node -e \"require('./app/server')\""
+    "start": "node -e \"require('./app/application')\""
   },
   "author": "Alec Merdler",
   "license": "ISC",

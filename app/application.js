@@ -7,7 +7,7 @@ var MessageServiceMQTT = require("./services/message-service-mqtt");
 var PaymentServiceMock = require("./services/payment-service-mock");
 
 
-class Server {
+class Application {
 
     constructor() {
         var app = express();
@@ -16,21 +16,23 @@ class Server {
         var brokerURI = "tcp://138.68.197.76:1883";
         var messageService = new MessageServiceMQTT(mqtt, brokerURI);
         var paymentService = new PaymentServiceMock();
-        var applicationController = new ApplicationController(appName, paymentService, messageService)
+        var applicationController = new ApplicationController(appName, paymentService, messageService);
 
         // Routes
         app.get("/",            applicationController.root);
         app.get("/healthcheck", applicationController.healthcheck);
         app.post("/initialize", applicationController.initialize);
 
-        var server = app.listen(port, () => {
+        this.server = app.listen(port, () => {
             console.log(appName + " listening on http://localhost:" + port);
         });
+    }
 
-        return server;
+    getServer() {
+        return this.server;
     }
 }
 
-module.exports = new Server();
+module.exports = new Application();
 
 

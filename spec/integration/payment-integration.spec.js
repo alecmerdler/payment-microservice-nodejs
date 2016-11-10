@@ -5,26 +5,25 @@ var mqtt = require("mqtt");
 
 describe("Payment Integration Test", () => {
     var serviceURL = "http://localhost:3000";
-    var server;
     var messageClient;
 
     beforeAll((done) => {
         var brokerURI = "tcp://52.25.184.170:1884";
         messageClient = mqtt.connect(brokerURI);
-        server = require("../../app/server");
-        server.on("listening", () => {
+        var application = require("../../app/application");
+        application.getServer().on("listening", () => {
             done();
         });
     });
 
-    afterAll((done) => {
-        messageClient.end(true);
-        server.close();
-        server.on("close", () => {
-            done();
-        });
-        server = undefined;
-    });
+    // afterAll((done) => {
+    //     messageClient.end(true);
+    //     server.close();
+    //     server.on("close", () => {
+    //         done();
+    //     });
+    //     server = undefined;
+    // });
 
     describe("GET /", () => {
 
