@@ -24,6 +24,26 @@ class Message {
         this.state = state;
         this.changes = changes;
     }
+
+    getResourceName() {
+        return this.resourceName;
+    }
+
+    getResourceId() {
+        return this.resourceId;
+    }
+
+    getAction() {
+        return this.action;
+    }
+
+    getState() {
+        return this.state;
+    }
+
+    getChanges() {
+        return this.changes;
+    }
 }
 
 module.exports = Message;

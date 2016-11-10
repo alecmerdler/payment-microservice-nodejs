@@ -1,8 +1,8 @@
 "use strict";
 
 var express = require("express");
-var ApplicationController = require("./controllers/application-controller");
 var mqtt = require("mqtt");
+var ApplicationController = require("./controllers/application-controller");
 var MessageServiceMQTT = require("./services/message-service-mqtt");
 var PaymentServiceMock = require("./services/payment-service-mock");
 

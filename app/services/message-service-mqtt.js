@@ -34,9 +34,9 @@ class MessageServiceMQTT {
         return Rx.Observable.create((subscriber) => {
             var wildcard = "";
             if (subscribeToAll) {
-                wildcard = "+";
+                wildcard = "/+";
             }
-            this.client.subscribe(topic + "/" + wildcard);
+            this.client.subscribe(topic.concat(wildcard));
             if (Object.keys(this.subscribers).includes(topic)) {
                 this.subscribers[topic].push(subscriber);
             }

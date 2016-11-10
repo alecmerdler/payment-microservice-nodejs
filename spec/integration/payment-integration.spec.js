@@ -2,6 +2,7 @@
 
 var Unirest = require("unirest");
 var mqtt = require("mqtt");
+var application = require("../../app/application");
 
 describe("Payment Integration Test", () => {
     var serviceURL = "http://localhost:3000";
@@ -10,20 +11,10 @@ describe("Payment Integration Test", () => {
     beforeAll((done) => {
         var brokerURI = "tcp://52.25.184.170:1884";
         messageClient = mqtt.connect(brokerURI);
-        var application = require("../../app/application");
         application.getServer().on("listening", () => {
             done();
         });
     });
-
-    // afterAll((done) => {
-    //     messageClient.end(true);
-    //     server.close();
-    //     server.on("close", () => {
-    //         done();
-    //     });
-    //     server = undefined;
-    // });
 
     describe("GET /", () => {
 
@@ -58,13 +49,14 @@ describe("Payment Integration Test", () => {
                     done();
                 });
         });
+
     });
 
-    describe("message to 'meals/' topic", () => {
+    describe("message to 'meals/+/purchase' topic", () => {
         var topic;
 
         beforeEach(() => {
-            topic = "meals/1/";
+            topic = "meals/1/purchase";
         });
 
         it("does nothing if '/initialize' route has not been hit", (done) => {

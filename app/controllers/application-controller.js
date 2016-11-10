@@ -1,6 +1,7 @@
 "use strict";
 
 var Rx = require("rx");
+var Purchase = require("../models/purchase");
 
 
 class ApplicationController {
@@ -29,9 +30,16 @@ class ApplicationController {
     }
 
     initialize(request, response) {
-        this.messageService.subscribe("meals", false)
+        this.messageService.subscribe("meals/+/purchase", false)
             .subscribe((message) => {
                 console.log(message.toString());
+                var newPurchase = new Purchase(message.getState()["userId"],
+                                               null,
+                                               message.getResourceId(),
+                                               message.getState()["price"],
+                                               Date.now(),
+                                               "unconfirmed");
+                console.log(JSON.stringify(newPurchase));
             });
 
         response

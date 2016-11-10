@@ -52,7 +52,7 @@ describe("MessageServiceMQTT", () => {
             messageService.subscribe(topic, false)
                 .subscribe((message) => {});
 
-            expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic + "/"]);
+            expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic]);
         });
 
 
