@@ -14,19 +14,44 @@ class MessageServiceMQTT {
         }
         this.client = mqtt.connect(brokerURI);
         this.actions = {};
-        this.subscribers = {};
+        this.subscriptions = new Map();
+        this.messages = [];
 
         this.client.on("connect", () => {
             console.log("connected to MQTT broker at " + brokerURI);
         });
 
-        this.client.on("message", (topic, message) => {
-            var subscriptionTopic = topic.split("/")[0];
-            if (this.subscribers[subscriptionTopic] !== undefined) {
-                this.subscribers[subscriptionTopic].forEach((subscriber) => {
-                    subscriber.onNext(message);
+        this.client.on("message", (mqttTopic, mqttMessage) => {
+            console.log(JSON.parse(mqttMessage.toString()));
+            this.messages.push(mqttMessage);
+            var incomingTopic = mqttTopic.split("/");
+
+            Rx.Observable.pairs(this.subscriptions)
+                .filter((subscription) => {
+                    var [topic, subscribers] = subscription;
+                    topic = topic.split("/");
+                    var include = true;
+                    if (incomingTopic.length > topic.length) {
+                        include = false;
+                    }
+                    else {
+                        for (var i = 0; i < incomingTopic.length; i++) {
+                            if (!topic[i] === "+" &&
+                                !topic[i] === incomingTopic[i]) {
+                                include = false;
+                            }
+                        }
+                    }
+
+                    return include;
+                })
+                .subscribe((subscription) => {
+                    var [topic, subscribers] = subscription;
+                    subscribers.forEach((subscriber) => {
+                        console.log(subscriber);
+                        // subscriber.onNext(mqttMessage);
+                    })
                 });
-            }
         });
     }
 
@@ -37,19 +62,19 @@ class MessageServiceMQTT {
                 wildcard = "/+";
             }
             this.client.subscribe(topic.concat(wildcard));
-            if (Object.keys(this.subscribers).includes(topic)) {
-                this.subscribers[topic].push(subscriber);
+            if (Object.keys(this.subscriptions).includes(topic)) {
+                this.subscriptions[topic].push(subscriber);
             }
             else {
-                this.subscribers[topic] = [subscriber];
+                this.subscriptions[topic] = [subscriber];
             }
         });
     }
 
     unsubscribe(topic) {
-        if (this.subscribers[topic] !== undefined) {
+        if (this.subscriptions[topic] !== undefined) {
             this.client.unsubscribe(topic);
-            delete this.subscribers[topic];
+            delete this.subscriptions[topic];
         }
     }
 

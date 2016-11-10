@@ -32,7 +32,6 @@ class ApplicationController {
     initialize(request, response) {
         this.messageService.subscribe("meals/+/purchase", false)
             .subscribe((message) => {
-                console.log(message.toString());
                 var newPurchase = new Purchase(message.getState()["userId"],
                                                null,
                                                message.getResourceId(),

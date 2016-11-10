@@ -63,12 +63,18 @@ describe("MessageServiceMQTT", () => {
             expect(clientMock.subscribe.calls.argsFor(0)).toEqual([topic + "/+"]);
         });
 
-        it("adds new Subscriber to subscribers map using topic as key name", () => {
+        it("adds new Subscriber to subscriptions map using topic as key name", () => {
             messageService.subscribe(topic, false)
                 .subscribe((message) => {});
 
-            expect(Object.keys(messageService.subscribers)).toContain(topic);
-            expect(messageService.subscribers[topic][0] instanceof Rx.Observer).toBe(true);
+            var found = false;
+            for (var key in messageService.subscriptions) {
+                if (key === topic) {
+                    found = true;
+                }
+            }
+            expect(found).toBe(true);
+            expect(messageService.subscriptions[topic][0] instanceof Rx.Observer).toBe(true);
         });
 
         it("returns an Observable", () => {
