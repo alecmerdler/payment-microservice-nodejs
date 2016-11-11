@@ -44,6 +44,10 @@ class Message {
     getChanges() {
         return this.changes;
     }
+
+    static fromJSON(json) {
+
+    }
 }
 
 module.exports = Message;

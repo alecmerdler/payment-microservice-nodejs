@@ -48,7 +48,7 @@ class MessageServiceMQTT {
                 .subscribe((subscription) => {
                     var [topic, subscribers] = subscription;
                     subscribers.forEach((subscriber) => {
-                        console.log(subscriber);
+                        var message = new Message()
                         // subscriber.onNext(mqttMessage);
                     })
                 });
