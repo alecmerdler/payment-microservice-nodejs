@@ -2,6 +2,7 @@
 
 var Rx = require("rx");
 var Purchase = require("../models/purchase");
+var Unirest = require("unirest");
 
 
 class ApplicationController {
@@ -10,6 +11,7 @@ class ApplicationController {
         this.appName = appName;
         this.paymentService = paymentService;
         this.messageService = messageService;
+        this.messages = [];
 
         // Bind methods to instance (http://stackoverflow.com/questions/34680450/)
         this.root = this.root.bind(this);
